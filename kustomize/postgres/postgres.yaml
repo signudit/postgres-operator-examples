@@ -5,8 +5,32 @@ metadata:
 spec:
   image: registry.developers.crunchydata.com/crunchydata/crunchy-postgres:ubi8-14.3-0
   postgresVersion: 14
+  patroni:
+    dynamicConfiguration:
+      synchronous_mode: true
+      synchronous_mode_strict: true
+      postgresql:
+        parameters:
+          synchronous_commit: "on"
   instances:
     - name: instance1
+      replicas: 1
+      resources:
+        limits:
+          cpu: 1
+          memory: 0.5Gi
+      dataVolumeClaimSpec:
+        accessModes:
+        - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: 1Gi
+    - name: instance2
+      replicas: 1
+      resources:
+        limits:
+          cpu: 1
+          memory: 0.5Gi
       dataVolumeClaimSpec:
         accessModes:
         - "ReadWriteOnce"
